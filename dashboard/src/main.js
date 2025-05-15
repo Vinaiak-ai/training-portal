@@ -34,11 +34,16 @@ function loading(type, _lockid = null) {
     }
 }
 loading();
-fetch(server + "/data/layout").then(response => response.json()).then(_layout => {
+fetch(server + "/data/layout").then(response => {
+    if (response.status !== 200) window.location.href = '/login'
+    else return response.json()
+}).then(_layout => {
     loading(false);
     layout = _layout;
     document.getElementById("workspace").style.display = "block";
     createOptions([]);
+}).catch(_ => {
+    window.location.href = '/login'
 });
 document.addEventListener("keydown", (event) => {
     if (
