@@ -1,0 +1,91 @@
+@media (max-aspect-ratio: 1/1) {
+  html {
+    font-size: 3dvw;
+  }
+}
+
+body {
+  font-size: 2em;
+  background-color: rgb(40, 40, 40);
+  color: white;
+  margin: 0;
+}
+
+#tutorial {
+  position: absolute;
+  bottom: 1dvh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  color: yellow;
+}
+
+#login-form {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 60%;
+  height: 60dvh;
+  top: 25dvh;
+  left: 20%;
+  padding: 1dvh;
+  border: 1px solid rgb(80, 80, 80);
+  border-radius: 20px;
+}
+
+#login-form input {
+  width: 96%;
+  height: 10%;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  font-size: 1.5rem;
+}
+
+#login-form input:focus {
+  background-color: rgb(50, 50, 50);
+}
+
+#login-form input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px rgb(50, 50, 50) inset;
+}
+
+#login {
+  min-width: 30%;
+  background-color: #13b448;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+#login:hover {
+  background-color: #53fd8b;
+}
+
+#header {
+  height: 25dvh;
+  width: 100dvw;
+  display: flex;
+  justify-content: center;
+}
+
+#header img {
+  position: absolute;
+  height: 100%;
+  opacity: 0.2;
+  filter: blur(1dvh);
+}
+
+#invalid-credentials {
+  position: absolute;
+  bottom: 77dvh;
+  color: red;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}

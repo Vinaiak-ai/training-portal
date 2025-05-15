@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Training portal</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <style id="topics-scrollBar"></style>
+    <link rel="icon" href="resources/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/turndown/lib/turndown.browser.umd.js"></script>
+    <div id="workspace" style="display: none; z-index: 1">
+        <h3 class="heading" style="z-index: 1">
+            Choose the topic that you want to edit
+        </h3>
+        <br />
+        <div id="topic-tree" style="z-index: 2"></div>
+        <div id="topic-tree-hider" style="display: none; z-index: 3"></div>
+        <div id="notice" style="display: none; z-index: 3">
+            <h5 class="heading" style="font-weight: 100; font-size: large">
+                <div style="color: red; font-weight: 900; font-size: xx-large">
+                    Warning!
+                </div>
+                The change is permanent and cannot be reversed
+            </h5>
+            <div class="tasks"></div>
+            <button class="close" title="Esc">×</button>
+        </div>
+        <button id="save-server" title="save to server" style="z-index: 4">
+            Save
+        </button>
+    </div>
+    <div id="loading" style="display: none; z-index: 2">
+        <div class="loader"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked@13.0.2/marked.min.js" async></script>
+    <script src="src/extract.js"></script>
+    <script src="src/trainer.js"></script>
+    <script src="src/main.js"></script>
+</body>
+
+</html>
