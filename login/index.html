@@ -2,41 +2,53 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="resources/favicon.ico" type="image/x-icon" />
-  <title>Training portal login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="resources/favicon.ico" type="image/x-icon" />
+    <title>Training portal login</title>
 </head>
 
 <body>
-  <div id="header">
-    <img src="resources/favicon.ico">
-    <h2>AI Training Portal</h2>
-  </div>
-  <h3 style="display: none;" id="invalid-credentials">Wrong credentials! Try again</h5>
-    <form id="login-form" action="https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws/auth" method="post">
-      <h3 style="margin: 0;">Admin login</h3>
-      <input type="text" id="orgId" name="orgId" placeholder="Organisation ID" autocomplete="on" required>
-      <input type="password" id="password" name="password" placeholder="Password" autocomplete="on" required>
-      <button type="submit" id="login">Login</button>
-    </form>
-    <a id="tutorial" href="https://gist.github.com/Suryansh-Dey/8310978d7128ea59e359392cd8f85301#file-trainingportal-md"
-      target="_blank">tutorial</a>
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const error = urlParams.get('error');
-      if (error === "invalid-credentials")
-        document.getElementById("invalid-credentials").style.display = "block"
+    <div id="header">
+        <img src="resources/favicon.ico">
+        <h2>AI Training Portal</h2>
+    </div>
+    <h3 style="display: none;" id="invalid-credentials">Wrong credentials! Try again</h5>
+        <form id="login-form" onsubmit="getSessionToken(event)">
+            <h3 style="margin: 0;">Admin login</h3>
+            <input type="text" id="orgId" name="orgId" placeholder="Organisation ID" autocomplete="on" required>
+            <input type="password" id="password" name="password" placeholder="Password" autocomplete="on" required>
+            <button type="submit" id="login">Login</button>
+        </form>
+        <a id="tutorial"
+            href="https://gist.github.com/Suryansh-Dey/8310978d7128ea59e359392cd8f85301#file-trainingportal-md"
+            target="_blank">tutorial</a>
+        <script>
+            function getSessionToken(event) {
+                event.preventDefault()
+                fetch("https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws/auth", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        orgId: document.getElementById('orgId').value,
+                        passowrd: document.getElementById('password').value
+                    })
+                })
+            }
 
-      document.getElementById("orgId").focus();
-      document.getElementById("orgId").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault()
-          document.getElementById("password").focus();
-        }
-      });
-    </script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error === "invalid-credentials")
+                document.getElementById("invalid-credentials").style.display = "block"
+
+            document.getElementById("orgId").focus();
+            document.getElementById("orgId").addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault()
+                    document.getElementById("password").focus();
+                }
+            });
+        </script>
 </body>
 
 </html>
