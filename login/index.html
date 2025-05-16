@@ -29,6 +29,9 @@
                 event.preventDefault()
                 fetch("https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws/auth", {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
                     credentials: 'include',
                     body: JSON.stringify({
                         orgId: document.getElementById('orgId').value,

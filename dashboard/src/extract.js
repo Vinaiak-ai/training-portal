@@ -52,6 +52,7 @@ function createButtonWindow(target, html, callback, finalize, dx, dy, info) {
 function scrapURL(target, url, callback, images) {
     fetch(server + "/scrap/site", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             url: /\b.+:\/\//.test(url) ? url : "https://" + url,

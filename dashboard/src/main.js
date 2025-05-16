@@ -1,6 +1,7 @@
 const server = "https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws";
 const contextSeperator = ';'
 const xhr = new XMLHttpRequest();
+xhr.withCredentials = true
 const topicTree = document.getElementById("topic-tree");
 const fileInputSvg =
     '<svg><path fill="currentColor" fill-rule="evenodd" d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z" clip-rule="evenodd"></path></svg>';
@@ -34,7 +35,9 @@ function loading(type, _lockid = null) {
     }
 }
 loading();
-fetch(server + "/data/layout").then(response => {
+fetch(server + "/data/layout", {
+    credentials: 'include'
+}).then(response => {
     if (response.status !== 200) window.location.href = '/login'
     else return response.json()
 }).then(_layout => {
@@ -335,6 +338,7 @@ function createTextEditor(context, operation) {
     if (!stopFetching)
         fetch(server + "/data/fetch", {
             method: "POST",
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json;charset=UTF-8"
             },
@@ -427,6 +431,7 @@ function addEditorButtons(editor) {
             loading();
             xhr.open("POST", server + "/data/fetch", true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.withCredentials = true
             xhr.onload = () => {
                 editor.querySelector(".textarea").innerHTML = wrapLinks(xhr.responseText)
                 activeEditorInitialHTML = editor.querySelector(".textarea").innerHTML;
@@ -638,6 +643,7 @@ async function executeTasks(tasks) {
         await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", server + task.route, true);
+            xhr.withCredentials = true
             xhr.onerror = resolve;
             xhr.ontimeout = resolve;
             xhr.onload = () => {
@@ -696,7 +702,7 @@ async function executeTasks(tasks) {
     loader.className = "loader";
     document.getElementById("workspace").appendChild(loader);
     // Resetting
-    const response = await fetch(server + '/data/layout')
+    const response = await fetch(server + '/data/layout', { credentials: 'include' })
     layout = await response.json()
     createOptions([]);
     const editors = document.querySelectorAll(".editor");
@@ -1038,6 +1044,7 @@ function uploadFileChanges(createds, deleteds) {
             const fileName = linkFragments[linkFragments.length - 1];
             const xhr = new XMLHttpRequest();
             xhr.open("POST", server + "/uploads?delete=true", true);
+            xhr.withCredentials = true
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.send(
                 JSON.stringify({ fileName: fileName }),
@@ -1047,6 +1054,7 @@ function uploadFileChanges(createds, deleteds) {
         for (let created of createds) {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", server + "/uploads", true);
+            xhr.withCredentials = true
             let req = new FormData();
             req.append("file", files[created.dataset.link]);
             xhr.onload = () => {
