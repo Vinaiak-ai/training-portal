@@ -50,7 +50,7 @@ function createButtonWindow(target, html, callback, finalize, dx, dy, info) {
  * @returns {void}
  */
 function scrapURL(target, url, callback, images) {
-    fetch(server + "/scrap/site", {
+    fetch("https://w7j2ouzoexsr4fqzfix767hx240nrypa.lambda-url.ap-south-1.on.aws" + "/scrap/site", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

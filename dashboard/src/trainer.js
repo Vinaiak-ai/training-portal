@@ -71,44 +71,52 @@ async function trainURL(url, context, options, exit) {
     let oldTopics = layout
     for (let topic of context)
         oldTopics = oldTopics[topic]
-    const response = await fetch(server + "/trainer", {
+    const response = await fetch("https://w7j2ouzoexsr4fqzfix767hx240nrypa.lambda-url.ap-south-1.on.aws", {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json;charset=UTF-8"
         },
         body: JSON.stringify({
-            type: 'url',
-            source: /\b.+:\/\//.test(url) ? url : "https://" + url,
-            topics: oldTopics,
-            options,
-            context
+            // type: 'url',
+            url: /\b.+:\/\//.test(url) ? url : "https://" + url,
+            // topics: oldTopics,
+            ...options,
+            tree: true
+            // context
         })
     }).catch((err) => {
-        if (exit) exit()
         showError("Failed to fetch " + url, 5 * 1000)
         console.error(err)
     })
-    const reader = response.body.getReader()
-    const decoder = new TextDecoder()
-
-    const references = decoder.decode((await reader.read()).value)
-    if (references.endsWith('ERROR')) {
-        showError("Failed to fetch " + url, 5 * 1000)
-        if (exit) exit()
-        return
+    // const reader = response.body.getReader()
+    // const decoder = new TextDecoder()
+    //
+    // const references = decoder.decode((await reader.read()).value)
+    // if (references.endsWith('ERROR')) {
+    //     showError("Failed to fetch " + url, 5 * 1000)
+    //     if (exit) exit()
+    //     return
+    // }
+    // while (!(chunk = await reader.read()).done) {
+    //     const data = decoder.decode(chunk.value)
+    //     if (data.endsWith('ERROR')) {
+    //         showError("Failed to fetch " + url, 5 * 1000)
+    //         break
+    //     }
+    //     const newTopics = JSON.parse(data)
+    //     if (newTopics) implementChanges(oldTopics, newTopics, context, options.append)
+    // }
+    try {
+        const newTopics = await response.json()
+        implementChanges(oldTopics, newTopics, context, options.append)
+        closeEditor()
+        showError("Trained from: " + references.replaceAll(';', ', '), 10 * 1000, 'green')
+    } catch (error) {
+        console.log(error)
+        showError("Failed to train of " + url)
     }
-    while (!(chunk = await reader.read()).done) {
-        const data = decoder.decode(chunk.value)
-        if (data.endsWith('ERROR')) {
-            showError("Failed to fetch " + url, 5 * 1000)
-            break
-        }
-        const newTopics = JSON.parse(data)
-        if (newTopics) implementChanges(oldTopics, newTopics, context, options.append)
-    }
-    closeEditor()
     if (exit) exit()
-    showError("Trained from: " + references.replaceAll(';', ', '), 10 * 1000, 'green')
 }
 /**
  * @param {string[]} context 
