@@ -19,7 +19,11 @@ async function createTopics(topics, context) {
     }))
     if (typeof topics === 'string') {
         const editor = getEditor(context.join(contextSeperator))
-        editor.querySelector('.textarea').innerHTML = wrapLinks(topics)
+        const text = `<details open>
+<summary>${context.join(' -> ')}</summary>
+${wrapLinks(topics)}
+</details>`
+        editor.querySelector('.textarea').innerHTML = text
         return
     }
 
@@ -78,40 +82,20 @@ async function trainURL(url, context, options, exit) {
             "Content-Type": "application/json;charset=UTF-8"
         },
         body: JSON.stringify({
-            // type: 'url',
             url: /\b.+:\/\//.test(url) ? url : "https://" + url,
-            // topics: oldTopics,
             ...options,
             tree: true
-            // context
         })
     }).catch((err) => {
         showError("Failed to fetch " + url, 5 * 1000)
         console.error(err)
     })
-    // const reader = response.body.getReader()
-    // const decoder = new TextDecoder()
-    //
-    // const references = decoder.decode((await reader.read()).value)
-    // if (references.endsWith('ERROR')) {
-    //     showError("Failed to fetch " + url, 5 * 1000)
-    //     if (exit) exit()
-    //     return
-    // }
-    // while (!(chunk = await reader.read()).done) {
-    //     const data = decoder.decode(chunk.value)
-    //     if (data.endsWith('ERROR')) {
-    //         showError("Failed to fetch " + url, 5 * 1000)
-    //         break
-    //     }
-    //     const newTopics = JSON.parse(data)
-    //     if (newTopics) implementChanges(oldTopics, newTopics, context, options.append)
-    // }
     try {
         const newTopics = await response.json()
         implementChanges(oldTopics, newTopics, context, options.append)
         closeEditor()
-        showError("Trained from: " + getAllKeys(newTopics).join(', '), 10 * 1000, 'green')
+        const topics = getAllKeys(newTopics);
+        showError("Trained on: " + topics.join(', '), topics.length * 1000, 'green')
     } catch (error) {
         console.error(error)
         showError("Failed to train of " + url)
