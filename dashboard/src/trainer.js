@@ -111,9 +111,9 @@ async function trainURL(url, context, options, exit) {
         const newTopics = await response.json()
         implementChanges(oldTopics, newTopics, context, options.append)
         closeEditor()
-        showError("Trained from: " + references.replaceAll(';', ', '), 10 * 1000, 'green')
+        showError("Trained from: " + getAllKeys(newTopics).join(', '), 10 * 1000, 'green')
     } catch (error) {
-        console.log(error)
+        console.error(error)
         showError("Failed to train of " + url)
     }
     if (exit) exit()
@@ -191,4 +191,25 @@ function inputTrainWindow(window, event, exit) {
             exit();
         });
     }
+}
+function getAllKeys(obj, keys = [], currentPath = '') {
+    if (typeof obj !== 'object' || obj === null) {
+        return keys;
+    }
+
+    if (Array.isArray(obj)) {
+        obj.forEach((item, index) => {
+            getAllKeys(item, keys, `${currentPath}[${index}]`);
+        });
+    } else {
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                const newPath = currentPath ? `${currentPath}.${key}` : key;
+                keys.push(newPath);
+
+                getAllKeys(obj[key], keys, newPath);
+            }
+        }
+    }
+    return keys;
 }
