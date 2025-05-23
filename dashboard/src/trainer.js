@@ -21,9 +21,9 @@ async function createTopics(topics, context) {
         const editor = getEditor(context.join(contextSeperator))
         const text = `<details open>
 <summary>${context.join(' -> ')}</summary>
-${wrapLinks(topics)}
+${topics}
 </details>`
-        editor.querySelector('.textarea').innerHTML = text
+        editor.querySelector('.textarea').innerHTML = wrapLinks(text)
         return
     }
 
