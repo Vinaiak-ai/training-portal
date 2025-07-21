@@ -1,5 +1,5 @@
 const server = "https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws";
-const contextSeperator = ';'
+const contextSeperator = '$'
 const xhr = new XMLHttpRequest();
 xhr.withCredentials = true
 const topicTree = document.getElementById("topic-tree");
@@ -1108,9 +1108,9 @@ function inputFiles(event, textarea) {
     textarea.appendChild(element);
 }
 function isValidTopicName(brotherTopics, topic) {
-    if (topic === "examples" || /"/.test(topic)) {
+    if (topic === "examples" || topic.includes('"') || topic.includes(contextSeperator)) {
         showError(
-            'Not allowed to create topic of name "examples" or containing double quotes (")',
+            'Not allowed to create topic of name "examples" or containing double quotes (") or ' + contextSeperator,
         );
         return false;
     }
