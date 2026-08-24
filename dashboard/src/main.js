@@ -1,4 +1,4 @@
-const server = "https://723lf5kroxlmnl6cyadfzlmqmq0rutsi.lambda-url.ap-south-1.on.aws";
+const server = "https://74wl6jbtb7zaeju2dv3oihrhme0xhzsl.lambda-url.ap-south-1.on.aws";
 const contextSeperator = '$'
 const xhr = new XMLHttpRequest();
 xhr.withCredentials = true
@@ -311,7 +311,7 @@ function createTextEditor(context, operation) {
             document.execCommand("insertLineBreak");
         }
     });
-    editor.querySelector(".textarea").addEventListener("paste", function(event) {
+    editor.querySelector(".textarea").addEventListener("paste", function (event) {
         const data = new DOMParser().parseFromString(
             event.clipboardData.getData("text/html"),
             "text/html",
